@@ -1,0 +1,7 @@
+.landing {
+    justify-content: center;
+    display: flex;
+    column-gap: 10px;
+    row-gap: 10px;
+    flex-wrap: wrap;
+}
