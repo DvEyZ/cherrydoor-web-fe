@@ -7,6 +7,7 @@ import { ErrorReport } from "../App/Report/ErrorReport";
 import { Loading } from "../App/Loading";
 import { OpenDoorAction } from "./Actions/OpenDoorAction";
 import { SetProfileAction } from "./Actions/SetProfileAction";
+import { LoadingError } from "../App/LoadingError";
 
 export const Dashboard = () => {
     const ctx = useContext(ApiContext);
@@ -32,6 +33,8 @@ export const Dashboard = () => {
 
 
     if(!loaded) return <Loading/>
+
+    if(fatal) return <LoadingError error={fatal}/>
 
     if(status && !fatal)
     return(

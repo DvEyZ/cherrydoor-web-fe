@@ -3,6 +3,7 @@ import { ApiContext } from "../App/ApiContext";
 import {  Link, useNavigate, useSearchParams } from "react-router-dom";
 import './Data.css'
 import { Loading } from "../App/Loading";
+import { LoadingError } from "../App/LoadingError";
 
 const Paginator = (props :{
     page :number,
@@ -42,7 +43,7 @@ export const Index = <DataModel,> (props :{
     
     const [data, setData] = useState<DataModel[]>([]);
     const [loaded, setLoaded] = useState<boolean>();
-    const [error, setError] = useState<boolean>();
+    const [error, setError] = useState<Error>();
 
     let page = Number.parseInt(searchParams.get('page') || '0');
     
@@ -63,6 +64,8 @@ export const Index = <DataModel,> (props :{
     }, [ctx, props.url, props.paginate, page]);
 
     if(!loaded) return <Loading/>
+
+    if(error) return <LoadingError error={error}/>
 
     if(loaded && !error)
     return(

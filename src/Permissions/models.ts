@@ -16,7 +16,8 @@ export const PermissionBriefSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            const: true
         },
         description: {
             name: 'description',
@@ -43,7 +44,8 @@ export const PermissionFullSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            const: true
         },
         description: {
             name: 'description',

@@ -6,6 +6,7 @@ import { ApiContext } from "../../App/ApiContext";
 import { ErrorReport } from "../../App/Report/ErrorReport";
 import { Report } from "../../App/Report/Report";
 import { Loading } from "../../App/Loading";
+import { LoadingError } from "../../App/LoadingError";
 
 const INTO_JSON :{
     [key in DataType]: (v :FormDataEntryValue | null) => any
@@ -13,6 +14,7 @@ const INTO_JSON :{
     [DataType.String]: (v) => v?.toString(),
     [DataType.Boolean]: (v) => v ? true : false,
     [DataType.Number]: (v) => v && Number.parseInt(v.toString()),
+    [DataType.Enum]: (v) => v?.toString(),
     [DataType.Array]: () => {},
     [DataType.Object]: () => {}
 }
@@ -23,16 +25,30 @@ const Input = (props :{
     id :string,
     value :string | number | boolean | undefined,
     disabled :boolean,
-    required :boolean
+    required :boolean,
+    matches? :RegExp
+    
+    enumOptions? :{
+        display :string,
+        value :string
+    }[]
 }) => {
     if(props.type === InputType.Checkbox) {
         return <input type={props.type} name={props.name} id={props.id} 
             defaultChecked={props.value as boolean} disabled={props.disabled} required={props.required}
         />
+    } else if (props.type === InputType.Enum) {
+        return <select name={props.name} id={props.id} defaultValue={props.value as any} required={props.required}>
+            {
+                props.enumOptions && props.enumOptions.map((v,i) => 
+                    <option key={i} value={v.value}>{v.display}</option>
+                )
+            }
+        </select>
     } else {
         return <input type={props.type} name={props.name} id={props.id} 
-            defaultValue={props.value as any} disabled={props.disabled} required={props.required
-        }/>
+            defaultValue={props.value as any} disabled={props.disabled} required={props.required} pattern={props.matches?.toString()}
+        />
     }
 };
 
@@ -99,6 +115,8 @@ export const Editor = <DataModel extends {
 
     if(!loaded) return <Loading/>
 
+    if(error) return <LoadingError error={error}/>
+
     if(loaded && !error)
     return(
         <div className={`editor editor-${props.name}`}>
@@ -122,7 +140,7 @@ export const Editor = <DataModel extends {
                 <button className="nav-back" onClick={() => {navigate(-1)}}>Powrót</button>
             </div>
             <div className="editor-body form-container">
-                <form onSubmit={(e) => {onSubmit(e)}} className="form">
+                <form onSubmit={(e) => {onSubmit(e)}} className="form editor-form">
                     {
                         Object.values(props.schema.data).filter((v) => v.inputType).map((v,i) => {
                             
@@ -133,8 +151,8 @@ export const Editor = <DataModel extends {
                                     </div>
                                     <div>
                                         <Input type={v.inputType} name={v.name} id={`editor-field-${v.name}`}
-                                        value={data ? data[v.name] : undefined} disabled={!!data && !!v.const}
-                                        required={!!v.required}/>
+                                        value={data ? data[v.name] : v.defaultValue} disabled={!!data && !!v.const}
+                                        required={!!v.required} enumOptions={v.enumOptions} matches={v.matches}/>
                                     </div>
                                 </React.Fragment>
                             )

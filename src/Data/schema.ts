@@ -2,6 +2,7 @@ export enum DataType {
     String = 'string',
     Number = 'number',
     Boolean = 'boolean',
+    Enum = 'enum',
     Array = 'array',
     Object = 'object',
 };
@@ -11,6 +12,7 @@ export enum InputType {
     Number = 'number',
     Checkbox = 'checkbox',
     Password = 'password',
+    Enum = 'select',
     Color = 'color'
 };
 
@@ -21,7 +23,14 @@ export interface DataField {
     inputType? :InputType,
     hidden? :boolean,
     const? :boolean,
-    required? :boolean
+    required? :boolean,
+    defaultValue? :any,
+    matches? :RegExp,
+
+    enumOptions? :{
+        display :string,
+        value :string
+    }[]
 }
 
 export interface DataSchema {

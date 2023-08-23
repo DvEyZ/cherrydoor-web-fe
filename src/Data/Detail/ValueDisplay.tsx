@@ -1,10 +1,11 @@
 import React from "react"
-import { DataType } from "../schema"
+import { DataField, DataType } from "../schema"
 
 export type ValueDisplay = (props :{
     field :string,
     value :any,
     resourceId :string,
+    schema :DataField
     refresh :() => any,
     back :() => any,
     onError :(e :Error) => any
@@ -21,6 +22,19 @@ export const StringDisplay :ValueDisplay = (props :{
         </div>
     )
 }
+
+export const EnumDisplay :ValueDisplay = (props :{
+    field :string,
+    value :string,
+    schema :DataField
+}) => {
+    return(
+        <div className="value-display string-display">
+            <div className="field">{props.field}</div>
+            <div className="value">{props.schema.enumOptions?.find((v) => v.value === props.value)?.display}</div>
+        </div>
+    )
+} 
 
 export const NumberDisplay :ValueDisplay = (props :{
     field :string,
@@ -51,5 +65,6 @@ export const DEFAULT_DISPLAYS :{
 } = {
     string: StringDisplay,
     number: NumberDisplay,
-    boolean: BooleanDisplay
+    boolean: BooleanDisplay,
+    enum :EnumDisplay
 }

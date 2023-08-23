@@ -9,12 +9,7 @@ export const SetProfileAction = (props :{
     const ctx = useContext(ApiContext);
 
     const [profiles, setProfiles] = useState<AccessProfileBriefModel[]>();
-    const [activeProfileName, setActiveProfileName] = useState<string>();
-
-
-    const fetchActiveProfile = () => {
-        setActiveProfileName('break')
-    }
+    const [activeProfile, setActiveProfile] = useState<{name :string}>();
 
     useEffect(() => {
         ctx.fetch(`${ctx.url}/access-profiles`).then((v) => {
@@ -23,19 +18,45 @@ export const SetProfileAction = (props :{
             props.onError(e)
         });
 
-        fetchActiveProfile();
+        ctx.fetch(`${ctx.url}/active-profile`).then((v) => {
+            setActiveProfile(v);
+        }).catch((e) => {
+            props.onError(e);
+        })
     }, [ctx, props]);
 
-    if(activeProfileName && profiles)
+    const onSelectProfile = (e :React.ChangeEvent<HTMLSelectElement>) => {
+        ctx.fetch(`${ctx.url}/active-profile`, 'POST', JSON.stringify({
+            name: e.target.value
+        })).then((v) => {
+            ctx.fetch(`${ctx.url}/active-profile`).then((v) => {
+                setActiveProfile(v);
+            }).catch((e) => {
+                props.onError(e);
+            })
+        }).catch((e) => {
+            props.onError(e)
+        })
+    }
+
+    if(activeProfile && profiles)
     return(
-        <Link to='/set-profile' className="box">
+        <div className="box">
             <img src='/icons/access_profile.png' alt=''/>
             <div className="profile-text-container">
                 <h2>Ustaw profil dostępu</h2>
                 <div className="active-profile-text">
-                    Aktywny profil dostępu: <Link to={`/access-profiles/${activeProfileName}`}>{activeProfileName}</Link>
+                    Aktywny profil dostępu: <Link to={`/access-profiles/${activeProfile.name}`}>{activeProfile.name}</Link>
                 </div>
             </div>
-        </Link>
+            <div style={{margin: 'auto'}}></div>
+            <select onChange={(e) => { onSelectProfile(e) }} value={activeProfile.name}>
+                {
+                    profiles.map((v,i) => 
+                        <option key={i} value={v.name}>{v.name}</option>
+                    )
+                }
+            </select>
+        </div>
     )
 }

@@ -7,6 +7,7 @@ import { ErrorReport } from "../../App/Report/ErrorReport";
 import { ActionDef } from "./Action";
 import { Report } from "../../App/Report/Report";
 import { Loading } from "../../App/Loading";
+import { LoadingError } from "../../App/LoadingError";
 
 export const Detail = <DataModel extends {
     id :number,
@@ -50,6 +51,8 @@ export const Detail = <DataModel extends {
     }, [fetchData]);
 
     if(!loaded) return <Loading/>;
+
+    if(fatal) return <LoadingError error={fatal}/>
 
     if(loaded && !fatal)
     return(
@@ -95,6 +98,7 @@ export const Detail = <DataModel extends {
                                 if(Disp) {
                                     return <Disp 
                                         resourceId={resourceId!} key={i} field={v.displayName} value={data![v.name]!}
+                                        schema={props.schema.data[v.name]}
                                         refresh={() => { fetchData() }} back={() => { navigate(-1) }}
                                         onError={(e) => {setError(e)}}    
                                     />

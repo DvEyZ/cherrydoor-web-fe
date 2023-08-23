@@ -20,6 +20,7 @@ export const WebUIUserFullSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa użytkownika',
             type: DataType.String,
+            const: true
         },
         is_admin: {
             name: 'is_admin',
@@ -37,7 +38,8 @@ export const WebUIUserCreateSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa użytkownika',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            const: true
         },
         password: {
             name: 'password',

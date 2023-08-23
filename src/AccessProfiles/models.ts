@@ -15,7 +15,8 @@ export const AccessProfileBriefSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            const: true
         },
         description: {
             name: 'description',
@@ -27,13 +28,35 @@ export const AccessProfileBriefSchema :DataSchema = {
             name: 'display_text',
             displayName: 'Wyświetlany tekst',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            matches: /^[^;]*$/
         },
         color: {
             name: 'color',
             displayName: 'Kolor',
             type: DataType.String,
             inputType: InputType.Color
+        },
+        access_mode: {
+            name: 'access_mode',
+            displayName: 'Tryb dostępu',
+            type: DataType.Enum,
+            inputType: InputType.Enum,
+            enumOptions: [
+                {
+                    display: 'Drzwi fizycznie otwarte',
+                    value: 'OpenLock'
+                },
+                {
+                    display: 'Dostęp na dowolną kartę',
+                    value: 'AllowAnyone'
+                },
+                {
+                    display: 'Sprawdzanie dostępu',
+                    value: 'CheckAccess'
+                }
+            ],
+            defaultValue: 'CheckAccess'
         },
     }
 }
@@ -53,7 +76,8 @@ export const AccessProfileFullSchema :DataSchema = {
             name: 'name',
             displayName: 'Nazwa',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            const: true
         },
         description: {
             name: 'description',
@@ -65,13 +89,35 @@ export const AccessProfileFullSchema :DataSchema = {
             name: 'display_text',
             displayName: 'Wyświetlany tekst',
             type: DataType.String,
-            inputType: InputType.Text
+            inputType: InputType.Text,
+            matches: /^[^;]*$/
         },
         color: {
             name: 'color',
             displayName: 'Kolor',
             type: DataType.String,
             inputType: InputType.Color
+        },
+        access_mode: {
+            name: 'access_mode',
+            displayName: 'Tryb dostępu',
+            type: DataType.Enum,
+            inputType: InputType.Enum,
+            enumOptions: [
+                {
+                    display: 'Drzwi fizycznie otwarte',
+                    value: 'OpenLock'
+                },
+                {
+                    display: 'Dostęp na dowolną kartę',
+                    value: 'AllowAnyone'
+                },
+                {
+                    display: 'Sprawdzanie dostępu',
+                    value: 'CheckAccess'
+                }
+            ],
+            defaultValue: 'CheckAccess'
         },
         permissions: {
             name: 'permissions',

@@ -187,6 +187,7 @@ a.list-box:hover {
 .rel-select {
     width: 100%;
     height: 30px;
+    font-size: 1.1rem;
 }
 
 .rel-form {
