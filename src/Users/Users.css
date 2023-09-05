@@ -17,3 +17,11 @@
 input.rel-select {
     font-size: 20px;
 }
+
+.action-container-awaiting {
+    background-color: rgb(0, 192, 0, 0.1) !important;
+}
+
+.action-container-failed {
+    background-color: rgba(192, 0, 0, 0.1) !important;
+}

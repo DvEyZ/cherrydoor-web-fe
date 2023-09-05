@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Index } from "../Data/Index";
 import { UserBriefModel, UserFullSchema, UserFullModel, UserBriefSchema } from "./models";
-import { AccessCodeAdd, AccessCodesDisplay, PermissionRelDisplay, UserBrief } from "./UserDisplay";
+import { AccessCodeAdd, AccessCodeRegister, AccessCodesDisplay, PermissionRelDisplay, UserBrief } from "./UserDisplay";
 import { Detail } from "../Data/Detail/Detail";
 import './Users.css'
 import { Editor } from "../Data/Editor/Editor";
@@ -28,7 +28,8 @@ export const Users = () => {
                     }} actions={[
                         Edit, Delete, 
                         RelAdd('permissions', 'permission', 'Nadaj uprawnienie', 'permissions'),
-                        AccessCodeAdd
+                        AccessCodeAdd,
+                        AccessCodeRegister
                     ]} />
                 }/>
                 <Route path=':resourceId/edit' element={

@@ -26,6 +26,11 @@ export const WebUIUserFullSchema :DataSchema = {
             name: 'is_admin',
             displayName: 'Uprawnienia administracyjne',
             type: DataType.Boolean
+        },
+        ac_does_not_expire: {
+            name: 'ac_does_not_expire',
+            displayName: 'Token nie wygasa',
+            type: DataType.Boolean
         }
     }
 }
@@ -51,6 +56,12 @@ export const WebUIUserCreateSchema :DataSchema = {
         is_admin: {
             name: 'is_admin',
             displayName: 'Uprawnienia administracyjne',
+            type: DataType.Boolean,
+            inputType: InputType.Checkbox
+        },
+        ac_does_not_expire: {
+            name: 'ac_does_not_expire',
+            displayName: 'Token nie wygasa',
             type: DataType.Boolean,
             inputType: InputType.Checkbox
         }

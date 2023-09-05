@@ -44,7 +44,7 @@ export const AccessCodesDisplay :ValueDisplay = (props :{
                         <div className="rd-container" key={i}>
                             <div className="acd-code box list-box">
                                 <img src='/icons/card.png' alt=""/>
-                                <div>{v.code}</div>
+                                <code>{v.code}</code>
                             </div>
                             <button className="rd-button" onClick={() => {onDelete(v.id)}}>
                                 <img src='/icons/delete.png' alt=""/>
@@ -137,7 +137,7 @@ export const AccessCodeAddAction = <DataModel extends {
             {
                 open &&
                 <div className="rel-form">
-                    <input type="text" className="rel-select" ref={codeInput}/>
+                    <input type="text" className="rel-select" ref={codeInput} minLength={8} maxLength={8}/>
                     <button className="grad-button" onClick={() => {onRelAdd()}}>Dodaj</button>
                 </div>
             }
@@ -147,6 +147,73 @@ export const AccessCodeAddAction = <DataModel extends {
 
 export const AccessCodeAdd :ActionDef = {
     action: AccessCodeAddAction,
+    onCompletePopup: 'Dodano.',
+    then: 'refresh'
+} 
+
+export const AccessCodeRegisterAction = <DataModel extends {
+    id :number
+},>(props :{
+    url :string,
+    resourceId :string,
+    data :DataModel,
+    onComplete :() => any,
+    onError :(e :Error) => any
+}) => {
+    const ctx = useContext(ApiContext);
+    const [awaiting, setAwaiting] = useState(false);
+    const [failed, setFailed] = useState(false);
+
+    const onRelAdd = () => {
+        setAwaiting(true);
+        ctx.fetch(`${ctx.url}/${props.url}/${props.resourceId}/access-codes/register`, 'POST').then(() => {
+            props.onComplete();
+            setAwaiting(false);
+        }).catch((e :Error) => {
+            if(!e.message.includes('404')) {
+                props.onError(e);
+            }
+
+            setFailed(true);
+            setTimeout(() => {
+                setFailed(false)
+            }, 3000);
+            setAwaiting(false);
+        })
+    }
+
+    return(
+        <button className={
+            `action-container rel-container box list-box ${awaiting ? 'action-container-awaiting' : ''} ${failed ? 'action-container-failed' : ''}`
+        } onClick={
+            awaiting ? () => {}
+            : () => {
+                onRelAdd();
+            }
+        }>
+            {
+                awaiting ? 
+                <div className="action-container-inner">
+                    <img src={`/icons/card-hold.png`} alt=''/>
+                    <div>Przyłóż kartę do czytnika</div>
+                </div>
+                : failed ? 
+                <div className="action-container-inner">
+                    <img src={`/icons/card-hold.png`} alt=""/>
+                    <div>Nie udało się zarejestrować karty</div>
+                </div>
+                :
+                <div className="action-container-inner">
+                    <img src={`/icons/card-hold.png`} alt=''/>
+                    <div>Zarejestruj kod dostępu</div>
+                </div>
+            }
+        </button>
+    )
+}
+
+export const AccessCodeRegister :ActionDef = {
+    action: AccessCodeRegisterAction,
     onCompletePopup: 'Dodano.',
     then: 'refresh'
 } 
