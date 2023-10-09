@@ -84,7 +84,7 @@ export const App = () => {
                 </a>
                 <p>Made by<> </>
                     <a href='https://github.com/Wiktor00Nedew'>Wiktor Nedew</a> &<> </>
-                    <a href='https://github.com/AvgLinuxUser'>Sebastian Malinowski</a> &<> </>
+                    <a href='https://github.com/AvgLinuxUser'>Sylwia Milewska</a> &<> </>
                     <a href='https://github.com/DvEyZ'>Szymon Kwiręg</a><> </>
                 </p>
                 wersja 0.0.0
